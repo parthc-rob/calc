@@ -451,6 +451,10 @@ def view_forward_pass(im1_fl, im2_fl, net_def_path='proto/deploy.prototxt', net_
 	from matplotlib import rcParams
 	caffe.set_mode_cpu()
 	net = caffe.Net(net_def_path,1,weights= net_model_path)
+
+	im1_original = cv2.cvtColor(cv2.imread(im1_fl), cv2.COLOR_BGR2RGB)
+	im2_original = cv2.cvtColor(cv2.imread(im2_fl), cv2.COLOR_BGR2RGB)
+
 	im1 = cv2.resize(cv2.cvtColor(cv2.imread(im1_fl), cv2.COLOR_BGR2GRAY), (160,120))
 	im2 = cv2.resize(cv2.cvtColor(cv2.imread(im2_fl), cv2.COLOR_BGR2GRAY), (160,120))
 	# Use caffe's transformer
@@ -464,13 +468,28 @@ def view_forward_pass(im1_fl, im2_fl, net_def_path='proto/deploy.prototxt', net_
 	net.forward()
 	relu23 = net.blobs['relu3'].data[0,0,:,:]
 		
-	plt.axis('off')
-	plt.imshow(relu13)
-	plt.show()	
+	fig, axs = plt.subplots(2, 2)
 
-	plt.axis('off')
-	plt.imshow(relu23)
+	axs[0, 0].imshow(im1_original)
+	axs[0, 0].set_title('live_college')
+
+	axs[0, 1].imshow(im2_original)
+	axs[0, 1].set_title('memory_college')
+
+	axs[1, 0].imshow(relu13, cmap='hsv', interpolation='nearest')
+	axs[1, 0].set_title('live_college DHOG')
+
+	axs[1, 1].imshow(relu23, cmap='hsv', interpolation='nearest')
+	axs[1, 1].set_title('memory_college DHOG')
+
 	plt.show()
+	# plt.axis('off')
+	# plt.imshow(relu13)
+	# plt.show()
+
+	# plt.axis('off')
+	# plt.imshow(relu23)
+	# plt.show()
 
 
 

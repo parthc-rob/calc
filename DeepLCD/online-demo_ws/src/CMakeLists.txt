@@ -15,7 +15,7 @@ set(ENDL "${Esc}[m")
 MESSAGE("${GREEN}Build type: ${CMAKE_BUILD_TYPE}${ENDL}")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall  -O3 -march=native ")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O3 -march=native -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall   -O3 -march=native -std=c++11 -DCPU_ONLY=1")
 
 find_package(Boost COMPONENTS filesystem REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -27,7 +27,7 @@ if (NOT Caffe_ROOT_DIR)
 endif()
 
 set(Caffe_LIBS ${Caffe_ROOT_DIR}/build/lib/libcaffe.so)
-set(Caffe_INCLUDE_DIRS ${Caffe_ROOT_DIR}/build/install/include)
+set(Caffe_INCLUDE_DIRS ${Caffe_ROOT_DIR}/include)
 
 find_package(catkin REQUIRED COMPONENTS roscpp cv_bridge geometry_msgs image_transport)
 

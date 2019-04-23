@@ -1,6 +1,5 @@
-
 cmake_minimum_required(VERSION 2.8)
-project(deeplcd)
+project("deeplcd")
 
 if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE Release)
@@ -15,14 +14,13 @@ set(ENDL "${Esc}[m")
 MESSAGE("${GREEN}Build type: ${CMAKE_BUILD_TYPE}${ENDL}")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall -O3 -march=native ")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -march=native -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -march=native -std=c++11 -DCPU_ONLY=1")
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules) # FindEigen3.cmake
 
 find_package(Boost COMPONENTS filesystem REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
-
 find_package(CUDA QUIET)
 
 if (NOT Caffe_ROOT_DIR)
@@ -31,7 +29,7 @@ endif()
 
 MESSAGE("${GREEN}Using Caffe_ROOT_DIR: ${Caffe_ROOT_DIR}${ENDL}")
 set(Caffe_LIBS ${Caffe_ROOT_DIR}/build/lib/libcaffe.so)
-set(Caffe_INCLUDE_DIRS ${Caffe_ROOT_DIR}/build/install/include)
+set(Caffe_INCLUDE_DIRS ${Caffe_ROOT_DIR}/include)
 MESSAGE("Caffe_LIBS: ${Caffe_LIBS}")
 MESSAGE("Caffe_INCLUDE_DIRS: ${Caffe_INCLUDE_DIRS}")
 
@@ -146,7 +144,7 @@ if (BUILD_TESTS)
 
 	# Specify MainTest's link libraries
 	ExternalProject_Get_Property(googletest binary_dir)
-	set(GTEST_LIBS_DIR ${binary_dir}/googlemock/gtest)
+	set(GTEST_LIBS_DIR ${binary_dir}/lib)
 
 	enable_testing()
 	
